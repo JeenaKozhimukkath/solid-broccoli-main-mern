@@ -9,7 +9,9 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import {useMutation} from '@apollo/client/react/hooks';
+import {SAVE_BOOK} from '../utils/mutation';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -19,6 +21,7 @@ const SearchBooks = () => {
   const [searchInput, setSearchInput] = useState('');
 
   // create state to hold saved bookId values
+  const [saveBook] = useMutation(SAVE_BOOK);
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
@@ -59,9 +62,9 @@ const SearchBooks = () => {
     }
   };
 
-  // create function to handle saving a book to our database
+  //function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
-    // find the book in `searchedBooks` state by the matching id
+    // find book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
     // get token
@@ -72,13 +75,16 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const resBook  = await saveBook({
+        variables:  {
+          bookData: {...bookToSave}
+        }
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      if (!resBook ) {
+        throw new Error("There was an error");
       }
-
-      // if book successfully saves to user's account, save book id to state
+      console.log(savedBookIds);
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
@@ -91,7 +97,7 @@ const SearchBooks = () => {
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
+            {/* <Form.Row> */}
               <Col xs={12} md={8}>
                 <Form.Control
                   name='searchInput'
@@ -107,7 +113,7 @@ const SearchBooks = () => {
                   Submit Search
                 </Button>
               </Col>
-            </Form.Row>
+            {/* </Form.Row> */}
           </Form>
         </Container>
       </div>
@@ -148,6 +154,7 @@ const SearchBooks = () => {
         </Row>
       </Container>
     </>
+
   );
 };
 
