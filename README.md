@@ -38,6 +38,9 @@ WHEN I click on the Logout button
 THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
 
 # Screenshot
+<img width="1678" alt="Screen Shot 2023-03-26 at 10 20 15 AM" src="https://user-images.githubusercontent.com/39594923/227782360-cbbc1379-ca01-48e9-9f76-cd68207d345d.png">
+
+![screencapture-localhost-3000-saved-2023-03-26-10_23_37](https://user-images.githubusercontent.com/39594923/227782391-ce5df9fc-2b71-4e6d-a112-99bf7ba3f744.png)
 
 # Repository
 https://github.com/JeenaKozhimukkath/solid-broccoli-main-mern.git
